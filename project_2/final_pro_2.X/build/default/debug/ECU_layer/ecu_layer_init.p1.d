@@ -1,0 +1,22 @@
+build/default/debug/ECU_layer/ecu_layer_init.p1:  \
+ECU_layer/ecu_layer_init.c  \
+ECU_layer/ecu_layer_init.h  \
+ECU_layer/chr_lcd/ecu_chr_lcd.h  \
+ECU_layer/chr_lcd/ecu_che_lcd_cfg.h  \
+ECU_layer/chr_lcd/../../MKAL_layer/gpio/pro_gpio.h  \
+ECU_layer/chr_lcd/../../MKAL_layer/gpio/../mkal_std_types.h  \
+ECU_layer/chr_lcd/../../MKAL_layer/gpio/../compiler.h  \
+ECU_layer/chr_lcd/../../MKAL_layer/gpio/../std_library.h  \
+ECU_layer/chr_lcd/../../MKAL_layer/gpio/../device_config.h  \
+ECU_layer/LED/ecu_led.h  \
+ECU_layer/LED/ecu_led_con.h  \
+ECU_layer/button/ecu_button.h  \
+ECU_layer/button/ecu_button_cfg.h  \
+ECU_layer/relay/ecu_relay.h  \
+ECU_layer/relay/ecu_relay_cgf.h  \
+ECU_layer/DC_MOTOR/ecu_dc_motor.h  \
+ECU_layer/DC_MOTOR/ecu_dc_motor_cfg.h  \
+ECU_layer/7_segment/ecu_seg.h  \
+ECU_layer/7_segment/ecu_seg_cfg.h  \
+ECU_layer/matrix_keypad/ecu_keymap.h  \
+ECU_layer/matrix_keypad/ecu_keymap_cgf.h 
