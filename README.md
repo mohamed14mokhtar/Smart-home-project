@@ -1,1 +1,1 @@
-# smart-home-project![Alt text](<Screenshot 2024-04-25 121727.png>)
+![Alt text](<Screenshot 2024-04-25 122724-1.png>)

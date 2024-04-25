@@ -100,7 +100,7 @@ int main() {
     ret = lcd_4bit_send_string_pos(&lcd_4bit,1,5,"author house ");
     ret = lcd_4bit_send_string_pos(&lcd_4bit,2,2,"date : ");
     ret = lcd_4bit_send_string_pos(&lcd_4bit,3,2,"temperature : ");
-    ret = lcd_4bit_send_string_pos(&lcd_4bit,2,2,"time : ");
+    ret = lcd_4bit_send_string_pos(&lcd_4bit,4,2,"time : ");
     //ret = lcd_4bit_send_string_pos(&lcd_4bit,4,2,"HOURS : ");
     
     
