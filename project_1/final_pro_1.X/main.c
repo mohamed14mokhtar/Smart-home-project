@@ -98,8 +98,9 @@ int main() {
    
     intitialized_functions();
     ret = lcd_4bit_send_string_pos(&lcd_4bit,1,5,"author house ");
-    ret = lcd_4bit_send_string_pos(&lcd_4bit,2,2,"data : ");
+    ret = lcd_4bit_send_string_pos(&lcd_4bit,2,2,"date : ");
     ret = lcd_4bit_send_string_pos(&lcd_4bit,3,2,"temperature : ");
+    ret = lcd_4bit_send_string_pos(&lcd_4bit,2,2,"time : ");
     //ret = lcd_4bit_send_string_pos(&lcd_4bit,4,2,"HOURS : ");
     
     
@@ -125,105 +126,109 @@ int main() {
     MSSP_I2C_Master_call_slave(&mssp_i2c,0x60,ds13_data[2],&i2c_ack);
     while(1)
     {
-
+        /* room 1 led */
         ret = ADC_get_conversion_blocking(&ADC_,ADC_CHANNEL_AN0,&ADC_VALUE);
         if(ADC_VALUE > 512){
             ret = GPIO_pIN_WRITE_LOGIC(&LED_ROOM_1,GPIO_HIGH);
         }else if(ADC_VALUE < 510){
             ret = GPIO_pIN_WRITE_LOGIC(&LED_ROOM_1,GPIO_LOW);
         }
+        
+        /* date and time  */
         ds1307_read_values(&mssp_i2c,DS13_ADDRESS,ds13_data,&i2c_ack);
         for(uint8 i =0 ; i<6 ;i++){
-            ds13_data_decimal[i]=transfer_0x_d(ds13_data[i]);
+            ds13_data_decimal[i]=ds13_data[i];
         }
+        
+        /* convert to string */
         if((ds13_data_decimal[1] < 10) ){
             
-        }else if((ds13_data_decimal[1] >= 10) && (ds13_data_decimal[1] < 20)){
+        }else if((ds13_data_decimal[1] >= 16) && (ds13_data_decimal[1] < 32)){
             ds13_data_decimal[1] = ds13_data_decimal[1] - 6;
-        }else if((ds13_data_decimal[1] >= 20) && (ds13_data_decimal[1] < 30)){
+        }else if((ds13_data_decimal[1] >= 32) && (ds13_data_decimal[1] < 48)){
             ds13_data_decimal[1] = ds13_data_decimal[1] - (6*2);
-        }else if((ds13_data_decimal[1] >= 30) && (ds13_data_decimal[1] < 40)){
+        }else if((ds13_data_decimal[1] >= 48) && (ds13_data_decimal[1] < 64)){
             ds13_data_decimal[1] = ds13_data_decimal[1] - (6*3);
-        }else if((ds13_data_decimal[1] >= 40) && (ds13_data_decimal[1] < 50)){
+        }else if((ds13_data_decimal[1] >= 64) && (ds13_data_decimal[1] < 80)){
             ds13_data_decimal[1] = ds13_data_decimal[1] - 6*4;
-        }else if((ds13_data_decimal[1] >= 50) && (ds13_data_decimal[1] < 60)){
+        }else if((ds13_data_decimal[1] >= 80) && (ds13_data_decimal[1] < 96)){
             ds13_data_decimal[1] = ds13_data_decimal[1] - 6*5;
         }
         
         
         if((ds13_data_decimal[2] < 10) ){
             
-        }else if((ds13_data_decimal[2] >= 10) && (ds13_data_decimal[2] < 20)){
+        }else if((ds13_data_decimal[2] >= 0x10) && (ds13_data_decimal[2] < 0x20)){
             ds13_data_decimal[2] = ds13_data_decimal[2] - 6;
-        }else if((ds13_data_decimal[2] >= 20) && (ds13_data_decimal[2] < 30)){
+        }else if((ds13_data_decimal[2] >= 0x20) && (ds13_data_decimal[2] < 0x30)){
             ds13_data_decimal[2] = ds13_data_decimal[2] - 6*2;
-        }else if((ds13_data_decimal[2] >= 30) && (ds13_data_decimal[2] < 40)){
+        }else if((ds13_data_decimal[2] >= 0x30) && (ds13_data_decimal[2] < 0x40)){
             ds13_data_decimal[2] = ds13_data_decimal[2] - 6*3;
-        }else if((ds13_data_decimal[2] >= 40) && (ds13_data_decimal[2] < 50)){
+        }else if((ds13_data_decimal[2] >= 0x40) && (ds13_data_decimal[2] < 0x50)){
             ds13_data_decimal[2] = ds13_data_decimal[2] - 6*4;
-        }else if((ds13_data_decimal[2] >= 50) && (ds13_data_decimal[2] < 60)){
+        }else if((ds13_data_decimal[2] >= 0x50) && (ds13_data_decimal[2] < 0x60)){
             ds13_data_decimal[2] = ds13_data_decimal[2] - 6*5;
         }
         
         
         if((ds13_data_decimal[3] < 10) ){
             
-        }else if((ds13_data_decimal[3] >= 10) && (ds13_data_decimal[3] < 20)){
+        }else if((ds13_data_decimal[3] >= 0x10) && (ds13_data_decimal[3] < 0x20)){
             ds13_data_decimal[3] = ds13_data_decimal[3] - 6;
-        }else if((ds13_data_decimal[3] >= 20) && (ds13_data_decimal[3] < 30)){
+        }else if((ds13_data_decimal[3] >= 0x20) && (ds13_data_decimal[3] < 0x30)){
             ds13_data_decimal[3] = ds13_data_decimal[3] - 12;
-        }else if((ds13_data_decimal[3] >= 30) && (ds13_data_decimal[3] < 40)){
+        }else if((ds13_data_decimal[3] >= 0x30) && (ds13_data_decimal[3] < 0x40)){
             ds13_data_decimal[3] = ds13_data_decimal[3] - 18;
-        }else if((ds13_data_decimal[3] >= 40) && (ds13_data_decimal[3] < 50)){
+        }else if((ds13_data_decimal[3] >= 0x40) && (ds13_data_decimal[3] < 0x50)){
             ds13_data_decimal[3] = ds13_data_decimal[3] - 24;
-        }else if((ds13_data_decimal[3] >= 50) && (ds13_data_decimal[3] < 60)){
+        }else if((ds13_data_decimal[3] >= 0x50) && (ds13_data_decimal[3] < 0x60)){
             ds13_data_decimal[3] = ds13_data_decimal[3] - 30;
         }
         
         
         if((ds13_data_decimal[4] < 10) ){
             
-        }else if((ds13_data_decimal[4] >= 10) && (ds13_data_decimal[4] < 20)){
+        }else if((ds13_data_decimal[4] >= 0x10) && (ds13_data_decimal[4] < 0x20)){
             ds13_data_decimal[4] = ds13_data_decimal[4] - 6;
-        }else if((ds13_data_decimal[4] >= 20) && (ds13_data_decimal[4] < 30)){
+        }else if((ds13_data_decimal[4] >= 0x20) && (ds13_data_decimal[4] < 0x30)){
             ds13_data_decimal[4] = ds13_data_decimal[4] - 12;
-        }else if((ds13_data_decimal[4] >= 30) && (ds13_data_decimal[4] < 40)){
+        }else if((ds13_data_decimal[4] >= 0x30) && (ds13_data_decimal[4] < 0x40)){
             ds13_data_decimal[4] = ds13_data_decimal[4] - 18;
-        }else if((ds13_data_decimal[4] >= 40) && (ds13_data_decimal[4] < 50)){
+        }else if((ds13_data_decimal[4] >= 0x40) && (ds13_data_decimal[4] < 0x50)){
             ds13_data_decimal[4] = ds13_data_decimal[4] - 24;
-        }else if((ds13_data_decimal[4] >= 50) && (ds13_data_decimal[4] < 60)){
+        }else if((ds13_data_decimal[4] >= 0x50) && (ds13_data_decimal[4] < 0x60)){
             ds13_data_decimal[4] = ds13_data_decimal[4] - 30;
         }
         
          if((ds13_data_decimal[0] < 10) ){
             
-        }else if((ds13_data_decimal[0] >= 10) && (ds13_data_decimal[0] < 20)){
+        }else if((ds13_data_decimal[0] >= 0x10) && (ds13_data_decimal[0] < 0x20)){
             ds13_data_decimal[0] = ds13_data_decimal[0] - 6;
-        }else if((ds13_data_decimal[0] >= 20) && (ds13_data_decimal[0] < 30)){
+        }else if((ds13_data_decimal[0] >= 0x20) && (ds13_data_decimal[0] < 0x30)){
             ds13_data_decimal[0] = ds13_data_decimal[0] - 12;
-        }else if((ds13_data_decimal[0] >= 30) && (ds13_data_decimal[0] < 40)){
+        }else if((ds13_data_decimal[0] >= 0x30) && (ds13_data_decimal[0] < 0x40)){
             ds13_data_decimal[0] = ds13_data_decimal[0] - 18;
-        }else if((ds13_data_decimal[0] >= 40) && (ds13_data_decimal[0] < 50)){
+        }else if((ds13_data_decimal[0] >= 0x40) && (ds13_data_decimal[0] < 0x50)){
             ds13_data_decimal[0] = ds13_data_decimal[0] - 24;
-        }else if((ds13_data_decimal[0] >= 50) && (ds13_data_decimal[0] < 60)){
+        }else if((ds13_data_decimal[0] >= 0x50) && (ds13_data_decimal[0] < 0x60)){
             ds13_data_decimal[0] = ds13_data_decimal[0] - 30;
         }
         
          if((ds13_data_decimal[5] < 10) ){
             
-        }else if((ds13_data_decimal[5] >= 10) && (ds13_data_decimal[5] < 20)){
+        }else if((ds13_data_decimal[5] >= 0x10) && (ds13_data_decimal[5] < 0x20)){
             ds13_data_decimal[5] = ds13_data_decimal[5] - 6;
-        }else if((ds13_data_decimal[5] >= 20) && (ds13_data_decimal[5] < 30)){
+        }else if((ds13_data_decimal[5] >= 0x20) && (ds13_data_decimal[5] < 0x30)){
             ds13_data_decimal[5] = ds13_data_decimal[5] - 12;
-        }else if((ds13_data_decimal[5] >= 30) && (ds13_data_decimal[5] < 40)){
+        }else if((ds13_data_decimal[5] >= 0x30) && (ds13_data_decimal[5] < 0x40)){
             ds13_data_decimal[5] = ds13_data_decimal[5] - 18-48;
-        }else if((ds13_data_decimal[5] >= 40) && (ds13_data_decimal[5] < 50)){
+        }else if((ds13_data_decimal[5] >= 0x40) && (ds13_data_decimal[5] < 0x50)){
             ds13_data_decimal[5] = ds13_data_decimal[5] - 24;
-        }else if((ds13_data_decimal[5] >= 50) && (ds13_data_decimal[5] < 60)){
+        }else if((ds13_data_decimal[5] >= 0x50) && (ds13_data_decimal[5] < 0x60)){
             ds13_data_decimal[5] = ds13_data_decimal[5] - 30;
         }
         
-        
+        /* send string to lcd  */
         ret = convert_uint8_to_string(ds13_data_decimal[3],&addd);
         ret = lcd_4bit_send_string_pos(&lcd_4bit,2,8,&addd);
         ret = lcd_4bit_send_char_data_pos(&lcd_4bit,2,11,'/');
@@ -234,6 +239,18 @@ int main() {
         ret = lcd_4bit_send_string_pos(&lcd_4bit,2,15,&addd);
         
         
+        
+        ret = convert_uint8_to_string(ds13_data_decimal[0],&addd);
+        ret = lcd_4bit_send_string_pos(&lcd_4bit,4,8,&addd);
+        ret = lcd_4bit_send_char_data_pos(&lcd_4bit,4,11,'/');
+        ret = convert_uint8_to_string(ds13_data_decimal[1],&addd);
+        ret = lcd_4bit_send_string_pos(&lcd_4bit,4,12,&addd);
+        ret = lcd_4bit_send_char_data_pos(&lcd_4bit,4,14,'/');
+        ret = convert_uint8_to_string(ds13_data_decimal[2],&addd);
+        ret = lcd_4bit_send_string_pos(&lcd_4bit,4,15,&addd);
+        
+        
+        /* temperature and control  */
         tc74_read_value(&mssp_i2c,ADDRESS_A7,REDISTER_READ_0,&tc74,&i2c_ack);
         tc74_ref =tc74;
         ret = convert_uint8_to_string(tc74_ref,&addd);

@@ -71,9 +71,9 @@ uint8 data[3];
 
 uint8 timer2_counter;
 //time
-uint8 seconds  =7;
-uint8 minutes  =55;
-volatile uint8 hours   =00 ;
+uint8 seconds  =5;
+uint8 minutes  =5;
+volatile uint8 hours   =14 ;
 int main() {
 
     intitialized_functions();
@@ -82,7 +82,7 @@ int main() {
         
         ret = ADC_get_conversion_blocking(&ADC_,ADC_CHANNEL_AN0,&ADC_DATA_RET);
         
-        
+        /* timer */
         ret = segment_wright_logic(&segment,(hours/10));
         ret = GPIO_pIN_WRITE_LOGIC(&pin_1,GPIO_HIGH);
         __delay_us(40);
@@ -112,7 +112,7 @@ int main() {
         if(ret_i2c_data_1 == 'a'){
             GPIO_pIN_WRITE_LOGIC(&led_room_3,GPIO_HIGH);
             relay_turn_on(&relay);
-              data_dev =((ADC_DATA_RET*100)/1022);
+              data_dev =((uint32)ADC_DATA_RET*100/1022);
             ccp2_pwm_set_duty(100 - data_dev);
             CCP2_select_statues(ccp2_pwm_initialize);
         }else{
@@ -166,7 +166,7 @@ void timer1_interrupt(void){
      couinter1++;
      couinter2++;
     I2C_CLOCK_STRETCH_ENABLE();
-    if((SSPSTATbits.D_nA == 0) && (SSPSTATbits.R_nW == 0)){
+    if((SSPSTATbits.D_nA == 0) && (SSPSTATbits.R_NOT_W == 0 )){
         uint8 dummy_buffer =SSPBUF;
         while(!SSPSTATbits.BF);
         ret_i2c_data_1 =SSPBUF;
